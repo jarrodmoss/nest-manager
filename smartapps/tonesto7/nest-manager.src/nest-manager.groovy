@@ -7194,6 +7194,10 @@ def remSendoSetCool(chgval, onTemp, offTemp) {
 
 	chgval = (chgval > (onTemp + maxTempChangeVal)) ? onTemp + maxTempChangeVal : chgval
 	chgval = (chgval < (offTemp - maxTempChangeVal)) ? offTemp - maxTempChangeVal : chgval
+	if(getLastOverrideWaitCoolSec() < (60 * 20)) {
+		LogAction("Remote Sensor: COOL - Set point already adjusted in last 20 minutes - waiting", "info", true)
+		return false
+	}
 	if(chgval != curCoolSetpoint) {
 		scheduleAutomationEval(60)
 		def cHeat = null
@@ -7205,6 +7209,7 @@ def remSendoSetCool(chgval, onTemp, offTemp) {
 			}
 		}
 		if(setTstatAutoTemps(remSenTstat, chgval, cHeat)) {
+			atomicState?.lastOverrideCoolWaitDt = getDtNow()
 			//LogAction("Remote Sensor: COOL - Adjusting CoolSetpoint to (${chgval}°${getTemperatureScale()}) ", "info", true)
 			//storeLastAction("Adjusted Cool Setpoint to (${chgval}°${getTemperatureScale()}) Heat Setpoint to (${cHeat}°${getTemperatureScale()})", getDtNow())
 			if(remSenTstatMir) { remSenTstatMir*.setCoolingSetpoint(chgval) }
@@ -7228,6 +7233,10 @@ def remSendoSetHeat(chgval, onTemp, offTemp) {
 
 	chgval = (chgval < (onTemp - maxTempChangeVal)) ? onTemp - maxTempChangeVal : chgval
 	chgval = (chgval > (offTemp + maxTempChangeVal)) ? offTemp + maxTempChangeVal : chgval
+	if(getLastOverrideWaitHeatSec() < (60 * 20)) {
+		LogAction("Remote Sensor: HEAT - Set point already adjusted in last 20 minutes - waiting", "info", true)
+		return false
+	}
 	if(chgval != curHeatSetpoint) {
 		scheduleAutomationEval(60)
 		def cCool = null
@@ -7239,6 +7248,7 @@ def remSendoSetHeat(chgval, onTemp, offTemp) {
 			}
 		}
 		if(setTstatAutoTemps(remSenTstat, cCool, chgval)) {
+			atomicState?.lastOverrideHeatWaitDt = getDtNow()
 			//LogAction("Remote Sensor: HEAT - Adjusting HeatSetpoint to (${chgval}°${getTemperatureScale()})", "info", true)
 			//storeLastAction("Adjusted Heat Setpoint to (${chgval}°${getTemperatureScale()}) Cool Setpoint to (${cCool}°${getTemperatureScale()})", getDtNow())
 			if(remSenTstatMir) { remSenTstatMir*.setHeatingSetpoint(chgval) }
@@ -7629,6 +7639,8 @@ def getRemoteSenAutomationEnabled() {
 
 def getLastOverrideCoolSec() { return !atomicState?.lastOverrideCoolDt ? 100000 : GetTimeDiffSeconds(atomicState?.lastOverrideCoolDt, null, "getLastOverrideCoolSec").toInteger() }
 def getLastOverrideHeatSec() { return !atomicState?.lastOverrideHeatDt ? 100000 : GetTimeDiffSeconds(atomicState?.lastOverrideHeatDt, null, "getLastOverrideHeatSec").toInteger() }
+def getLastOverrideWaitCoolSec() { return !atomicState?.lastOverrideCoolWaitDt ? 100000 : GetTimeDiffSeconds(atomicState?.lastOverrideCoolWaitDt, null, "getLastOverrideWaitCoolSec").toInteger() }
+def getLastOverrideWaitHeatSec() { return !atomicState?.lastOverrideHeatWaitDt ? 100000 : GetTimeDiffSeconds(atomicState?.lastOverrideHeatWaitDt, null, "getLastOverrideWaitHeatSec").toInteger() }
 
 def disableOverrideTemps() {
 	if(atomicState?.heatOverride || atomicState?.coolOverride) {
@@ -7636,6 +7648,8 @@ def disableOverrideTemps() {
 		atomicState?.heatOverride = null
 		atomicState?.lastOverrideCoolDt = null
 		atomicState?.lastOverrideHeatDt = null
+		atomicState?.lastOverrideCoolWaitDt = null
+		atomicState?.lastOverrideHeatWaitDt = null
 		LogAction("disableOverrideTemps: Disabling Override temps", "trace", true)
 	}
 }
