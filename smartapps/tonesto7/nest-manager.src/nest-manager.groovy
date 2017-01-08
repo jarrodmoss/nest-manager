@@ -44,7 +44,7 @@ def appVersion() { "4.4.1" }
 def appVerDate() { "1-7-2017" }
 def appVerInfo() {
 	def str = ""
-	
+
 	str += "V4.4.1 (January 7th, 2017):"
 	str += "\n▔▔▔▔▔▔▔▔▔▔▔"
 	str += "\n • UPDATE: Added the Nest Auth token to appData for easy management"
@@ -7190,7 +7190,7 @@ def remSendoSetCool(chgval, onTemp, offTemp) {
 	def curCoolSetpoint = getTstatSetpoint(remSenTstat, "cool")
 	def curHeatSetpoint = getTstatSetpoint(remSenTstat, "heat")
 	def tempChangeVal = !remSenTstatTempChgVal ? 5.0 : Math.min(Math.max(remSenTstatTempChgVal.toDouble(), 2.0), 5.0)
-	def maxTempChangeVal = tempChangeVal * 3
+	def maxTempChangeVal = tempChangeVal * 2
 
 	chgval = (chgval > (onTemp + maxTempChangeVal)) ? onTemp + maxTempChangeVal : chgval
 	chgval = (chgval < (offTemp - maxTempChangeVal)) ? offTemp - maxTempChangeVal : chgval
@@ -7224,7 +7224,7 @@ def remSendoSetHeat(chgval, onTemp, offTemp) {
 	def curCoolSetpoint = getTstatSetpoint(remSenTstat, "cool")
 	def curHeatSetpoint = getTstatSetpoint(remSenTstat, "heat")
 	def tempChangeVal = !remSenTstatTempChgVal ? 5.0 : Math.min(Math.max(remSenTstatTempChgVal.toDouble(), 2.0), 5.0)
-	def maxTempChangeVal = tempChangeVal * 3
+	def maxTempChangeVal = tempChangeVal * 2
 
 	chgval = (chgval < (onTemp - maxTempChangeVal)) ? onTemp - maxTempChangeVal : chgval
 	chgval = (chgval > (offTemp + maxTempChangeVal)) ? offTemp + maxTempChangeVal : chgval
@@ -7300,7 +7300,7 @@ private remSenCheck() {
 			}
 
 			def tempChangeVal = !remSenTstatTempChgVal ? 5.0 : Math.min(Math.max(remSenTstatTempChgVal.toDouble(), 2.0), 5.0)
-			def maxTempChangeVal = tempChangeVal * 3
+			def maxTempChangeVal = tempChangeVal * 2
 			def curTstatTemp = getDeviceTemp(remSenTstat).toDouble()
 			def curSenTemp = (settings?.remSensorDay) ? getRemoteSenTemp().toDouble() : null
 
