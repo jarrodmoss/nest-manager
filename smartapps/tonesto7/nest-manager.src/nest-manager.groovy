@@ -7202,8 +7202,8 @@ def remSendoSetCool(chgval, onTemp, offTemp) {
 		scheduleAutomationEval(60)
 		def cHeat = null
 		if(hvacMode in ["auto"]) {
-			if(curHeatSetpoint >= (offTemp-tempChangeVal)) {
-				cHeat = offTemp - tempChangeVal
+			if(curHeatSetpoint >= (offTemp-tempChangeVal-3)) {
+				cHeat = offTemp - tempChangeVal - 3
 				LogAction("Remote Sensor: HEAT - Adjusting HeatSetpoint to (${cHeat}°${getTemperatureScale()}) to allow COOL setting", "info", true)
 				if(remSenTstatMir) { remSenTstatMir*.setHeatingSetpoint(cHeat) }
 			}
@@ -7241,8 +7241,8 @@ def remSendoSetHeat(chgval, onTemp, offTemp) {
 		scheduleAutomationEval(60)
 		def cCool = null
 		if(hvacMode in ["auto"]) {
-			if(curCoolSetpoint <= (offTemp+tempChangeVal)) {
-				cCool = offTemp + tempChangeVal
+			if(curCoolSetpoint <= (offTemp+tempChangeVal+3)) {
+				cCool = offTemp + tempChangeVal + 3
 				LogAction("Remote Sensor: COOL - Adjusting CoolSetpoint to (${cCool}°${getTemperatureScale()}) to allow HEAT setting", "info", true)
 				if(remSenTstatMir) { remSenTstatMir*.setCoolingSetpoint(cCool) }
 			}
