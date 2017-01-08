@@ -7249,7 +7249,7 @@ def remSendoSetHeat(chgval, onTemp, offTemp) {
 		}
 		if(setTstatAutoTemps(remSenTstat, cCool, chgval)) {
 			atomicState?.lastOverrideHeatWaitDt = getDtNow()
-			//LogAction("Remote Sensor: HEAT - Adjusting HeatSetpoint to (${chgval}°${getTemperatureScale()})", "info", true)
+			LogAction("Remote Sensor: HEAT - Adjusting HeatSetpoint to (${chgval}°${getTemperatureScale()})", "info", true)
 			//storeLastAction("Adjusted Heat Setpoint to (${chgval}°${getTemperatureScale()}) Cool Setpoint to (${cCool}°${getTemperatureScale()})", getDtNow())
 			if(remSenTstatMir) { remSenTstatMir*.setHeatingSetpoint(chgval) }
 		}
