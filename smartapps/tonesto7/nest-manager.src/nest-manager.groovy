@@ -7569,7 +7569,7 @@ def getRemoteSenTemp() {
 }
 
 def getRemSenCoolSetTemp() {
-	if(getLastOverrideCoolSec() < (3600 * 4)) {
+	if(getLastOverrideCoolSec() < (3600 * 2)) {
 		if(atomicState?.coolOverride != null) {
 			return atomicState?.coolOverride.toDouble()
 		}
@@ -7595,7 +7595,7 @@ def getRemSenCoolSetTemp() {
 }
 
 def getRemSenHeatSetTemp() {
-	if(getLastOverrideHeatSec() < (3600 * 4)) {
+	if(getLastOverrideHeatSec() < (3600 * 2)) {
 		if(atomicState?.heatOverride != null) {
 			return atomicState.heatOverride.toDouble()
 		}
