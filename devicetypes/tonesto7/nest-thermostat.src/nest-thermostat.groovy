@@ -1113,7 +1113,7 @@ def getTempWaitVal() {
 	return state?.childWaitVal ? state?.childWaitVal.toInteger() : 4
 }
 
-def wantMetric() { return (state?.tempUnit == "C") }
+def wantMetric() { return false }
 
 
 /************************************************************************************************
