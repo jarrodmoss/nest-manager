@@ -3578,7 +3578,7 @@ def getWeatherDeviceInst() {
 
 def getWebFileData(now = true) {
 	//LogTrace("getWebFileData")
-	def params = [ uri: "https://raw.githubusercontent.com/tonesto7/nest-manager/${gitBranch()}/Data/appData.json", contentType: 'application/json' ]
+	def params = [ uri: "https://raw.githubusercontent.com/jarrodmoss/nest-manager/${gitBranch()}/Data/appData.json", contentType: 'application/json' ]
 	def result = false
 	try {
 		def allowAsync = false
